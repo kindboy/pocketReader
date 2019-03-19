@@ -89,11 +89,19 @@ Page({
         });
     },
     handleRemoveFromShelf() {
-        const bookId = this.data.bookInfo['_id'];
-        let myBooks = storage.get('myBooks', []);
-        myBooks = myBooks.filter(i => i['_id'] !== bookId);
-        storage.set('myBooks', myBooks);
-        this.setData({ isInShelf: false });
+        wx.showModal({
+            title: '提示',
+            content: '确定要从书架移除此书吗',
+            success(res) {
+                if (res.confirm) {
+                    const bookId = this.data.bookInfo['_id'];
+                    let myBooks = storage.get('myBooks', []);
+                    myBooks = myBooks.filter(i => i['_id'] !== bookId);
+                    storage.set('myBooks', myBooks);
+                    this.setData({ isInShelf: false });
+                }
+            }
+        });
     },
     handleAddToShelf() {
         const { _id, title, cover } = this.data.originBookInfo;
